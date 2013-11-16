@@ -1,0 +1,25 @@
+{% extends "base_template.html" %}
+{% load staticfiles %}
+{% load blog.block_tags %}
+
+{% block content %}
+
+{% if request.session.logged_in %}
+	<div>
+		<a href="{% url 'blog:add' %}">Add</a>
+	</div>
+{% endif %}
+
+<br/>
+	{% for post in posts %}
+		{% display_post %}
+    {% endfor %}
+    <div>
+        {% if prev_page %}
+            <a href="{% url 'blog:index' %}?page={{ prev_page }}">Previous</a>
+        {% endif %}
+        {% if next_page %}
+            <a href="{% url 'blog:index' %}?page={{ next_page }}">Next</a>
+        {% endif %}    
+    </div>       
+{% endblock %}

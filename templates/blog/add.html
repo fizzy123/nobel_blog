@@ -1,0 +1,49 @@
+{% extends 'base_template.html' %}
+
+{% block content %}
+<div style="text-align: left;">
+<form action="{% url 'blog:add' %}" method="post">
+{% csrf_token %}
+
+<label for="title">Title</label>
+<input type="text" 
+	   name="title" 
+	   id="title" 
+	   {% if edit %} 
+	       value="{{ post.title }}"
+	   {% endif %}
+/>
+<br/>
+
+<label for="draft">Draft </label>
+<input type="checkbox" 
+	   name="draft" 
+	   id="draft"
+	   {% if edit %}
+	       value="{{ post.draft }}
+	   {% endif %}
+/>
+<br/>
+
+<label for="tags">Tags (comma-seperated)</label>
+<input type="text" 
+	   name="tags" 
+	   id="tags"
+	   {% if edit %}
+	       value="{% for name in post.tag_names %}{{name}}{% if not forloop.last %}, {% endif %}{% endfor %}"/>
+	   {% endif %}
+<br/>
+
+<label for="content">Content</label>
+<br/>
+<textarea name="content" id="content" cols="100" rows="25">{% if edit %}{{ post.content }}{% endif %}
+</textarea>
+
+{% if edit %}
+	<input type="hidden" name="pk" value="{{ post.pk }}"/>
+{% endif %}
+<input type="submit" value="Submit"/>
+
+</form>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+<div class="post">
+	<div class="post-header">
+		<div class="headline">
+			<div class="title">
+				<a href="{% url 'blog:view_single_post' post.pk %}" class="plain-link">
+					{{ post.title }}
+				<a>
+			</div>
+			{% if request.session.logged_in %}
+				<div>
+					<form action="{% url 'blog:delete' %}" method='POST'>
+						{% csrf_token %}
+						<input type='hidden' name='pk' value='{{ post.pk }}'>
+						<input type='submit' value='Delete'>
+					</form>
+				</div>
+				<div>
+					<a href="{% url 'blog:edit' post.pk %}"> Edit </a>
+				</div>
+			{% endif %}
+		</div>
+		<div class="tags">
+		{% for tag in post.tag_names %} 
+			{{tag}}{% if not forloop.last %} / {% endif %}
+		{% endfor %}
+		</div>
+		<div class="datetime">{{post.pub_date}}</div>
+	</div>
+	{% autoescape off %}
+		<div class="content">{{ post.content }}</div>
+	{% endautoescape %}
+</div>
